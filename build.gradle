@@ -90,11 +90,9 @@ dependencies {
 
     compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_140'
     compileOnly 'com.google.code.gson:gson:2.10.1'
-    compileOnly 'io.github.realmangorage:installer:2.0.0'
 
     shadow 'com.mattmalec:Pterodactyl4J:2.BETA_140'
     shadow 'com.google.code.gson:gson:2.10.1'
-    shadow 'io.github.realmangorage:installer:2.0.0'
 }
 
 test {
