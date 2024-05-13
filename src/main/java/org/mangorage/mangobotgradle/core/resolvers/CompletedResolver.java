@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. MangoRage
+ * Copyright (c) 2024. MangoRage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,35 +20,7 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.tasks;
+package org.mangorage.mangobotgradle.core.resolvers;
 
-import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.TaskAction;
-import org.mangorage.gradleutils.Config;
-import org.mangorage.gradleutils.core.Version;
-
-import javax.inject.Inject;
-import java.nio.file.Path;
-import java.util.List;
-
-public abstract class ReleaseTask extends DefaultTask {
-    private final Version.Type type;
-    @Inject
-    public ReleaseTask(Config config, String group, Version.Type type) {
-        this.type = type;
-        var dep = config.getReleaseTask();
-        setGroup(group);
-        setFinalizedBy(List.of(dep));
-    }
-
-    @TaskAction
-    public void run() {
-        Version version = new Version(Path.of("version.txt"));
-        switch (type) {
-            case MAJOR -> version.bumpMajor();
-            case MINOR -> version.bumpMinor();
-            case PATCH -> version.bumpPatch();
-        }
-        getProject().setVersion(version.getValue());
-    }
+public record CompletedResolver(boolean success, ResolveDependency dependency) {
 }

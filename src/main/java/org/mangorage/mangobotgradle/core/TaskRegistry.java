@@ -20,11 +20,26 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.core;
+package org.mangorage.mangobotgradle.core;
 
+import org.gradle.api.Project;
+import org.mangorage.mangobotgradle.Config;
 
-import org.gradle.api.tasks.TaskContainer;
+import java.util.ArrayList;
 
-public interface IRegisterSupplier {
-    void register(TaskContainer tasks);
+public class TaskRegistry {
+    private final Config config;
+    private final ArrayList<IRegisterSupplier> registerSuppliers = new ArrayList<>();
+
+    public TaskRegistry(Config config) {
+        this.config = config;
+    }
+
+    public void register(IRegisterSupplier supplier) {
+        registerSuppliers.add(supplier);
+    }
+
+    public void apply(Project project) {
+        registerSuppliers.forEach(a -> a.register(project.getTasks()));
+    }
 }

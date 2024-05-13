@@ -20,26 +20,30 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.core;
+package org.mangorage.mangobotgradle.tasks;
 
-import org.gradle.api.Project;
-import org.mangorage.gradleutils.Config;
+import org.gradle.api.Task;
+import org.gradle.api.tasks.JavaExec;
+import org.mangorage.mangobotgradle.Config;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 
-public class TaskRegistry {
-    private final Config config;
-    private final ArrayList<IRegisterSupplier> registerSuppliers = new ArrayList<>();
+public abstract class RunBotTask extends JavaExec {
+    @Inject
+    public RunBotTask(Config config, String group) {
+        setGroup(group);
+        setDescription("Runs the bot");
 
-    public TaskRegistry(Config config) {
-        this.config = config;
-    }
+        ArrayList<Task> deps = new ArrayList<>();
+        deps.addAll(getProject().getTasksByName("copyTask", false));
+        deps.addAll(getProject().getTasksByName("runInstaller", false));
 
-    public void register(IRegisterSupplier supplier) {
-        registerSuppliers.add(supplier);
-    }
+        setDependsOn(deps);
+        mustRunAfter(deps);
 
-    public void apply(Project project) {
-        registerSuppliers.forEach(a -> a.register(project.getTasks()));
+        classpath(getProject().getConfigurations().getByName(config.isPluginDevMode() ? "bot" : "botInternal").getFiles());
+        setMain("org.mangorage.mangobot.loader.Loader");
+        setWorkingDir(getProject().file("build/run/"));
     }
 }

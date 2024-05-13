@@ -20,7 +20,7 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.core;
+package org.mangorage.mangobotgradle.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

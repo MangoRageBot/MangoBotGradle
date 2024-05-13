@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. MangoRage
+ * Copyright (c) 2023. MangoRage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,11 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.core.resolvers;
+package org.mangorage.mangobotgradle.core;
 
-public interface Resolver {
-    CompletedResolver resolve(ResolveDependency dependency);
+
+import org.gradle.api.tasks.TaskContainer;
+
+public interface IRegisterSupplier {
+    void register(TaskContainer tasks);
 }

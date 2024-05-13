@@ -20,23 +20,23 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils;
+package org.mangorage.mangobotgradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.mangorage.gradleutils.core.Constants;
-import org.mangorage.gradleutils.core.TaskRegistry;
-import org.mangorage.gradleutils.core.Version;
-import org.mangorage.gradleutils.tasks.CopyTask;
-import org.mangorage.gradleutils.tasks.DatagenTask;
-import org.mangorage.gradleutils.tasks.ReleaseTask;
-import org.mangorage.gradleutils.tasks.RunBotTask;
-import org.mangorage.gradleutils.tasks.RunInstallerTask;
-import org.mangorage.gradleutils.tasks.SetupPluginsTask;
+import org.mangorage.mangobotgradle.core.Constants;
+import org.mangorage.mangobotgradle.core.TaskRegistry;
+import org.mangorage.mangobotgradle.core.Version;
+import org.mangorage.mangobotgradle.tasks.CopyTask;
+import org.mangorage.mangobotgradle.tasks.DatagenTask;
+import org.mangorage.mangobotgradle.tasks.ReleaseTask;
+import org.mangorage.mangobotgradle.tasks.RunBotTask;
+import org.mangorage.mangobotgradle.tasks.RunInstallerTask;
+import org.mangorage.mangobotgradle.tasks.SetupPluginsTask;
 
 import java.util.Objects;
 
-public class GradleUtilsPlugin implements Plugin<Project> {
+public class MangoBotGradlePlugin implements Plugin<Project> {
     private final Config config = new Config(this);
     private final TaskRegistry taskRegistry = new TaskRegistry(config);
 
@@ -48,7 +48,7 @@ public class GradleUtilsPlugin implements Plugin<Project> {
         return config;
     }
 
-    public GradleUtilsPlugin() {
+    public MangoBotGradlePlugin() {
         taskRegistry.register(t -> {
             t.register("copyTask", CopyTask.class, config);
             t.register("runBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP);

@@ -20,7 +20,7 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.core;
+package org.mangorage.mangobotgradle.core;
 
 public class Constants {
     public static final String BOT_TASKS_GROUP = "bot tasks";

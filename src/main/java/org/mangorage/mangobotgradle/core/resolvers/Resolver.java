@@ -20,18 +20,8 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.core.resolvers;
+package org.mangorage.mangobotgradle.core.resolvers;
 
-public record ResolveDependency(String groupID, String nameID, String versionID, String nameID2, String versionID2) {
-    public static ResolveDependency of(String groupID, String nameID, String versionID) {
-        return new ResolveDependency(groupID, nameID, versionID, nameID, versionID);
-    }
-
-    public CompletedResolver complete(String groupID, String nameID, String versionID, String nameID2, String versionID2) {
-        return new CompletedResolver(true, new ResolveDependency(groupID, nameID, versionID, nameID2, versionID2));
-    }
-
-    public CompletedResolver pass() {
-        return new CompletedResolver(false, this);
-    }
+public interface Resolver {
+    CompletedResolver resolve(ResolveDependency dependency);
 }

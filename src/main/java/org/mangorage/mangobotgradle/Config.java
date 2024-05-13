@@ -20,24 +20,24 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils;
+package org.mangorage.mangobotgradle;
 
 import org.gradle.api.Task;
 import org.gradle.jvm.tasks.Jar;
-import org.mangorage.gradleutils.core.Constants;
-import org.mangorage.gradleutils.core.resolvers.Resolver;
-import org.mangorage.gradleutils.tasks.DatagenTask;
-import org.mangorage.gradleutils.tasks.RestartServerTask;
+import org.mangorage.mangobotgradle.core.Constants;
+import org.mangorage.mangobotgradle.core.resolvers.Resolver;
+import org.mangorage.mangobotgradle.tasks.DatagenTask;
+import org.mangorage.mangobotgradle.tasks.RestartServerTask;
 
 import java.util.function.Supplier;
 
 public class Config {
-    private final GradleUtilsPlugin plugin;
+    private final MangoBotGradlePlugin plugin;
     private boolean pluginDevMode = true;
     private Jar jarTask;
     private Supplier<Task> releaseTask = () -> null;
 
-    public Config(GradleUtilsPlugin plugin) {
+    public Config(MangoBotGradlePlugin plugin) {
         this.plugin = plugin;
     }
 

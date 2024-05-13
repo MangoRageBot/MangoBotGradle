@@ -20,11 +20,11 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.tasks;
+package org.mangorage.mangobotgradle.tasks;
 
 import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.TaskAction;
-import org.mangorage.gradleutils.Config;
+import org.mangorage.mangobotgradle.Config;
 
 import javax.inject.Inject;
 import java.io.IOException;

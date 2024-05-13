@@ -20,30 +20,35 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.tasks;
+package org.mangorage.mangobotgradle.tasks;
 
-import org.gradle.api.Task;
-import org.gradle.api.tasks.JavaExec;
-import org.mangorage.gradleutils.Config;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.TaskAction;
+import org.mangorage.mangobotgradle.Config;
+import org.mangorage.mangobotgradle.core.Version;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
+import java.nio.file.Path;
+import java.util.List;
 
-public abstract class RunBotTask extends JavaExec {
+public abstract class ReleaseTask extends DefaultTask {
+    private final Version.Type type;
     @Inject
-    public RunBotTask(Config config, String group) {
+    public ReleaseTask(Config config, String group, Version.Type type) {
+        this.type = type;
+        var dep = config.getReleaseTask();
         setGroup(group);
-        setDescription("Runs the bot");
+        setFinalizedBy(List.of(dep));
+    }
 
-        ArrayList<Task> deps = new ArrayList<>();
-        deps.addAll(getProject().getTasksByName("copyTask", false));
-        deps.addAll(getProject().getTasksByName("runInstaller", false));
-
-        setDependsOn(deps);
-        mustRunAfter(deps);
-
-        classpath(getProject().getConfigurations().getByName(config.isPluginDevMode() ? "bot" : "botInternal").getFiles());
-        setMain("org.mangorage.mangobot.loader.Loader");
-        setWorkingDir(getProject().file("build/run/"));
+    @TaskAction
+    public void run() {
+        Version version = new Version(Path.of("version.txt"));
+        switch (type) {
+            case MAJOR -> version.bumpMajor();
+            case MINOR -> version.bumpMinor();
+            case PATCH -> version.bumpPatch();
+        }
+        getProject().setVersion(version.getValue());
     }
 }

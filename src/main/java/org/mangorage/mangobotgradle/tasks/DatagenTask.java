@@ -20,15 +20,15 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.gradleutils.tasks;
+package org.mangorage.mangobotgradle.tasks;
 
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.ResolvedDependency;
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
-import org.mangorage.gradleutils.GradleUtilsPlugin;
-import org.mangorage.gradleutils.core.resolvers.ResolveDependency;
-import org.mangorage.gradleutils.core.resolvers.Resolver;
+import org.mangorage.mangobotgradle.MangoBotGradlePlugin;
+import org.mangorage.mangobotgradle.core.resolvers.ResolveDependency;
+import org.mangorage.mangobotgradle.core.resolvers.Resolver;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -136,7 +136,7 @@ public class DatagenTask {
         return repo.getUrl().toString().startsWith("file:/");
     }
 
-    public static void apply(Project project, GradleUtilsPlugin gradleUtilsPlugin) {
+    public static void apply(Project project, MangoBotGradlePlugin gradleUtilsPlugin) {
         var tp = project.getTasks().register("runDatagen", task -> {
             task.setGroup("bot tasks");
             task.doLast(action -> {
