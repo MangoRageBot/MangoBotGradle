@@ -52,6 +52,7 @@ public class MangoBotGradlePlugin implements Plugin<Project> {
         taskRegistry.register(t -> {
             t.register("copyTask", CopyTask.class, config);
             t.register("runBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP);
+            t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, "--dev");
             t.register("runInstaller", RunInstallerTask.class, Constants.INSTALLER_TASKS_GROUP);
             t.register("setupPlugins", SetupPluginsTask.class);
             if (config.getReleaseTask() != null) {
