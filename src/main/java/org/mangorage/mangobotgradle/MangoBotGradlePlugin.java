@@ -34,6 +34,7 @@ import org.mangorage.mangobotgradle.tasks.RunBotTask;
 import org.mangorage.mangobotgradle.tasks.RunInstallerTask;
 import org.mangorage.mangobotgradle.tasks.SetupPluginsTask;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MangoBotGradlePlugin implements Plugin<Project> {
@@ -52,7 +53,7 @@ public class MangoBotGradlePlugin implements Plugin<Project> {
         taskRegistry.register(t -> {
             t.register("copyTask", CopyTask.class, config);
             t.register("runBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP);
-            t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, "--dev");
+            t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--dev"));
             t.register("runInstaller", RunInstallerTask.class, Constants.INSTALLER_TASKS_GROUP);
             t.register("setupPlugins", SetupPluginsTask.class);
             if (config.getReleaseTask() != null) {

@@ -32,7 +32,7 @@ import java.util.List;
 
 public abstract class RunBotTask extends JavaExec {
     @Inject
-    public RunBotTask(Config config, String group, String... args) {
+    public RunBotTask(Config config, String group, List<String> args) {
         setGroup(group);
         setDescription("Runs the bot");
 
@@ -46,6 +46,6 @@ public abstract class RunBotTask extends JavaExec {
         classpath(getProject().getConfigurations().getByName(config.isPluginDevMode() ? "bot" : "botInternal").getFiles());
         setMain("org.mangorage.mangobot.loader.Loader");
         setWorkingDir(getProject().file("build/run/"));
-        setArgs(List.of(args));
+        setArgs(args);
     }
 }
