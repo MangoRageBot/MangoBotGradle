@@ -52,10 +52,14 @@ public class MangoBotGradlePlugin implements Plugin<Project> {
     public MangoBotGradlePlugin() {
         taskRegistry.register(t -> {
             t.register("copyTask", CopyTask.class, config);
+            t.register("setupPlugins", SetupPluginsTask.class);
+
+            t.register("runInstaller", RunInstallerTask.class, Constants.INSTALLER_TASKS_GROUP);
+
+
             t.register("runBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP);
             t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--dev"));
-            t.register("runInstaller", RunInstallerTask.class, Constants.INSTALLER_TASKS_GROUP);
-            t.register("setupPlugins", SetupPluginsTask.class);
+
             if (config.getReleaseTask() != null) {
                 t.register("releaseMajor", ReleaseTask.class, config, Constants.BOT_TASKS_GROUP, Version.Type.MAJOR);
                 t.register("releaseMinor", ReleaseTask.class, config, Constants.BOT_TASKS_GROUP, Version.Type.MINOR);
