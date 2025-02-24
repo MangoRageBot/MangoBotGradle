@@ -45,12 +45,6 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-def getCommitNumber = {
-    def proc = 'git rev-list --count master'.execute()
-    proc.waitFor()
-    return proc.text.trim()
-}
-
 group = 'org.mangorage'
 version = getLatestGitTag() + "." + getLatestGitVersion()
 

@@ -22,6 +22,8 @@
 
 package org.mangorage.mangobotgradle.tasks;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.ResolvedDependency;
@@ -29,6 +31,8 @@ import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.mangorage.mangobotgradle.MangoBotGradlePlugin;
 import org.mangorage.mangobotgradle.core.resolvers.ResolveDependency;
 import org.mangorage.mangobotgradle.core.resolvers.Resolver;
+import org.mangorage.mangobotgradle.types.Dependencies;
+import org.mangorage.mangobotgradle.types.Dependency;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -41,6 +45,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class DatagenTask {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
     private static final List<String> mavenRepositories = List.of(
             "https://repo.maven.apache.org/maven2/",
             "https://repo1.maven.org/maven2/"
@@ -89,7 +95,7 @@ public class DatagenTask {
     }
 
 
-    public static void getTransitiveDep(List<String> repos, ResolvedDependency dependency, Predicate<ModuleVersionIdentifier> checker, ArrayList<String> deps, ArrayList<ModuleVersionIdentifier> identifiers, ArrayList<String> urls) {
+    public static void getTransitiveDep(List<String> repos, ResolvedDependency dependency, Predicate<ModuleVersionIdentifier> checker, ArrayList<String> deps, ArrayList<ModuleVersionIdentifier> identifiers, ArrayList<Dependency> urls) {
         var dep = dependency.getModule().getId();
         String id = dep.toString();
 
@@ -108,7 +114,15 @@ public class DatagenTask {
             var result = generate(repos, path);
 
             if (result != null) {
-                urls.add("%s %s %s %s %s-%s.jar".formatted(result, resolved.groupID(), resolved.nameID(), resolved.versionID(), resolved.nameID2(), resolved.versionID2()));
+                urls.add(
+                        new Dependency(
+                                result,
+                                resolved.groupID(),
+                                resolved.nameID(),
+                                resolved.versionID(),
+                                "%s-%s.jar".formatted(resolved.nameID2(), resolved.versionID2())
+                        )
+                );
             }
         }
 
@@ -143,7 +157,7 @@ public class DatagenTask {
                 var repos = getAllRepositories(project);
                 var deps = new ArrayList<String>();
                 var idents = new ArrayList<ModuleVersionIdentifier>();
-                var urls = new ArrayList<String>();
+                var urls = new ArrayList<Dependency>();
 
                 var conf = project.getConfigurations().getByName("library");
 
@@ -156,7 +170,7 @@ public class DatagenTask {
                 System.out.printf("%s dependencies%n", deps.size());
 
                 var projectRootDir = project.getProjectDir().toPath();
-                var depsFile = projectRootDir.resolve("src/main/resources/installerdata/deps.txt").toFile();
+                var depsFile = projectRootDir.resolve("src/main/resources/installer-data/dependencies.txt").toFile();
 
 
                 try {
@@ -167,13 +181,7 @@ public class DatagenTask {
                 }
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(depsFile))) {
-                    urls.forEach(a -> {
-                        try {
-                            writer.write(a + "\n");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                    writer.write(GSON.toJson(new Dependencies(urls)));
                     writer.close();
                     System.out.println("Dependencies have been generated to: " + depsFile);
                 } catch (IOException e) {
