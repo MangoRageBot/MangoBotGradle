@@ -170,7 +170,7 @@ public class DatagenTask {
                 System.out.printf("%s dependencies%n", deps.size());
 
                 var projectRootDir = project.getProjectDir().toPath();
-                var depsFile = projectRootDir.resolve("src/main/resources/installer-data/dependencies.txt").toFile();
+                var depsFile = projectRootDir.resolve("src/main/resources/installer-data/dependencies.json").toFile();
 
 
                 try {
