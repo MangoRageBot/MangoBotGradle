@@ -27,4 +27,12 @@ public record GitVersion(String tag, String commits, String commit) {
     public boolean isUnknown() {
         return this == UNKNOWN;
     }
+
+    public String getVersionAsString() {
+        return getVersionAsString(false);
+    }
+
+    public String getVersionAsString(boolean includeCommit) {
+        return includeCommit ? tag + "." + commits + "-" + commit : tag + "." + commits;
+    }
 }
