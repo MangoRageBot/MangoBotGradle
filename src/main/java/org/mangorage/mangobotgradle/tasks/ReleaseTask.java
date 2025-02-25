@@ -43,7 +43,7 @@ public abstract class ReleaseTask extends DefaultTask {
 
     @TaskAction
     public void run() {
-        Version version = new Version(Path.of("version.txt"));
+        Version version = new Version(Path.of("commits.txt"));
         switch (type) {
             case MAJOR -> version.bumpMajor();
             case MINOR -> version.bumpMinor();

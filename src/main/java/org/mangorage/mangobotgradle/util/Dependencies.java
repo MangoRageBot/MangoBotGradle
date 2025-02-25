@@ -1,4 +1,4 @@
-package org.mangorage.mangobotgradle.types;
+package org.mangorage.mangobotgradle.util;
 
 
 import java.util.List;

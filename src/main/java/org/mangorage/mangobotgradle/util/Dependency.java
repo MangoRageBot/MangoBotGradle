@@ -20,6 +20,6 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.mangorage.mangobotgradle.types;
+package org.mangorage.mangobotgradle.util;
 
 public record Dependency(String url, String group, String artifact, String version, String target) {}

@@ -31,8 +31,8 @@ import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.mangorage.mangobotgradle.MangoBotGradlePlugin;
 import org.mangorage.mangobotgradle.core.resolvers.ResolveDependency;
 import org.mangorage.mangobotgradle.core.resolvers.Resolver;
-import org.mangorage.mangobotgradle.types.Dependencies;
-import org.mangorage.mangobotgradle.types.Dependency;
+import org.mangorage.mangobotgradle.util.Dependencies;
+import org.mangorage.mangobotgradle.util.Dependency;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
