@@ -35,7 +35,7 @@ import org.mangorage.mangobotgradle.tasks.SetupPluginsTask;
 import java.util.List;
 import java.util.Objects;
 
-public class MangoBotGradlePlugin implements Plugin<Project> {
+public final class MangoBotGradlePlugin implements Plugin<Project> {
     private final Config config = new Config();
     private final TaskRegistry taskRegistry = new TaskRegistry(config);
 

@@ -29,7 +29,7 @@ import org.mangorage.mangobotgradle.tasks.DatagenTask;
 
 import java.util.function.Supplier;
 
-public class Config {
+public final class Config {
     private boolean pluginDevMode = true;
     private Jar jarTask;
     private Supplier<Task> releaseTask = () -> null;
