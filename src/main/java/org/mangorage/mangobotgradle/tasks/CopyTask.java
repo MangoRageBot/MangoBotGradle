@@ -36,7 +36,10 @@ public abstract class CopyTask extends Copy {
     private final boolean isPluginDev;
 
     @Inject
-    public CopyTask(Config config) {
+    public CopyTask(Config config, String group) {
+        setGroup(group);
+        setDescription("Copies stuff over for the bot");
+
         this.isPluginDev = config.isPluginDevMode();
         var dependency = config.getJarTask();
 

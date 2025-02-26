@@ -53,7 +53,8 @@ public abstract class SetupPluginsTask extends DefaultTask {
     }
 
     @Inject
-    public SetupPluginsTask() {
+    public SetupPluginsTask(String group) {
+        setGroup(group);
         setDescription("sets up the plugins");
 
         setDependsOn(List.of(getProject().getTasksByName("copyTask", false)));

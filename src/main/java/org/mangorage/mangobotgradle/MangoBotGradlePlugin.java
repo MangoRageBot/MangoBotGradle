@@ -49,8 +49,8 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
 
     public MangoBotGradlePlugin() {
         taskRegistry.register(t -> {
-            t.register("copyTask", CopyTask.class, config);
-            t.register("setupPlugins", SetupPluginsTask.class);
+            t.register("copyTask", CopyTask.class, config, Constants.BOT_OTHER_TASKS_GROUP);
+            t.register("setupPlugins", SetupPluginsTask.class, Constants.BOT_OTHER_TASKS_GROUP);
 
             t.register("runInstaller", RunInstallerTask.class, Constants.INSTALLER_TASKS_GROUP);
 
