@@ -92,11 +92,13 @@ dependencies {
     compileOnly 'org.apache.groovy:groovy:4.0.14'
     compileOnly gradleApi()
 
+    compileOnly 'org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r'
     compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_140'
     compileOnly 'com.google.code.gson:gson:2.10.1'
 
     shadow 'com.mattmalec:Pterodactyl4J:2.BETA_140'
     shadow 'com.google.code.gson:gson:2.10.1'
+    shadow 'org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r'
 }
 
 test {
