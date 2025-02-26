@@ -44,7 +44,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class DatagenTask {
+/**
+ * Only Hardcoded class
+ *
+ * TODO: Fix it, so it isn't a final class,
+ * TODO: should be abstract as per Gradle Task Conventions
+ */
+public final class DatagenTask {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static final List<String> mavenRepositories = List.of(

@@ -24,32 +24,17 @@ package org.mangorage.mangobotgradle;
 
 import org.gradle.api.Task;
 import org.gradle.jvm.tasks.Jar;
-import org.mangorage.mangobotgradle.core.Constants;
 import org.mangorage.mangobotgradle.core.resolvers.Resolver;
 import org.mangorage.mangobotgradle.tasks.DatagenTask;
-import org.mangorage.mangobotgradle.tasks.RestartServerTask;
 
 import java.util.function.Supplier;
 
 public class Config {
-    private final MangoBotGradlePlugin plugin;
     private boolean pluginDevMode = true;
     private Jar jarTask;
     private Supplier<Task> releaseTask = () -> null;
 
-    public Config(MangoBotGradlePlugin plugin) {
-        this.plugin = plugin;
-    }
-
-    public void enableRestartServerTask(String serverID, String serverURL, String serverToken, Task dependency) {
-        plugin.getTaskRegistry().register(tasks -> {
-            var clazz = dependency == null ? RestartServerTask.WithoutDep.class : RestartServerTask.class;
-            if (dependency == null)
-                tasks.register("restartServer", clazz, serverID, serverURL, serverToken, Constants.BOT_TASKS_GROUP);
-            if (dependency != null)
-                tasks.register("restartServer", clazz, serverID, serverURL, serverToken, Constants.BOT_TASKS_GROUP, dependency);
-        });
-    }
+    public Config() {}
 
     public void setJarTask(Jar jar) {
         this.jarTask = jar;
@@ -59,21 +44,12 @@ public class Config {
         return jarTask;
     }
 
-
     public void disableCopyOverBot() {
         this.pluginDevMode = false;
     }
 
     public boolean isPluginDevMode() {
         return this.pluginDevMode;
-    }
-
-    public void setReleaseTask(Supplier<Task> task) {
-        this.releaseTask = task;
-    }
-
-    public Task getReleaseTask() {
-        return releaseTask.get();
     }
 
     public void addResolver(Resolver resolver) {

@@ -27,7 +27,7 @@ import org.mangorage.mangobotgradle.Config;
 
 import java.util.ArrayList;
 
-public class TaskRegistry {
+public final class TaskRegistry {
     private final Config config;
     private final ArrayList<IRegisterSupplier> registerSuppliers = new ArrayList<>();
 

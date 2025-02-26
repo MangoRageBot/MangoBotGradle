@@ -26,10 +26,8 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.mangorage.mangobotgradle.core.Constants;
 import org.mangorage.mangobotgradle.core.TaskRegistry;
-import org.mangorage.mangobotgradle.core.Version;
 import org.mangorage.mangobotgradle.tasks.CopyTask;
 import org.mangorage.mangobotgradle.tasks.DatagenTask;
-import org.mangorage.mangobotgradle.tasks.ReleaseTask;
 import org.mangorage.mangobotgradle.tasks.RunBotTask;
 import org.mangorage.mangobotgradle.tasks.RunInstallerTask;
 import org.mangorage.mangobotgradle.tasks.SetupPluginsTask;
@@ -38,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MangoBotGradlePlugin implements Plugin<Project> {
-    private final Config config = new Config(this);
+    private final Config config = new Config();
     private final TaskRegistry taskRegistry = new TaskRegistry(config);
 
     public TaskRegistry getTaskRegistry() {
@@ -56,15 +54,8 @@ public class MangoBotGradlePlugin implements Plugin<Project> {
 
             t.register("runInstaller", RunInstallerTask.class, Constants.INSTALLER_TASKS_GROUP);
 
-
             t.register("runBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP);
             t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--dev"));
-
-            if (config.getReleaseTask() != null) {
-                t.register("releaseMajor", ReleaseTask.class, config, Constants.BOT_TASKS_GROUP, Version.Type.MAJOR);
-                t.register("releaseMinor", ReleaseTask.class, config, Constants.BOT_TASKS_GROUP, Version.Type.MINOR);
-                t.register("releasePatch", ReleaseTask.class, config, Constants.BOT_TASKS_GROUP, Version.Type.PATCH);
-            }
         });
     }
 
@@ -98,11 +89,11 @@ public class MangoBotGradlePlugin implements Plugin<Project> {
             t.setCanBeResolved(true);
         });
 
-        var embededLibrary = project.getConfigurations().create("embedLibrary", t -> {
+        var embeddedLibrary = project.getConfigurations().create("embedLibrary", t -> {
             t.setVisible(true);
         });
 
-        project.getConfigurations().findByName("implementation").extendsFrom(botCfg, plugin, library, embededLibrary);
+        project.getConfigurations().findByName("implementation").extendsFrom(botCfg, plugin, library, embeddedLibrary);
 
         project.afterEvaluate(a -> {
             Objects.requireNonNull(config.getJarTask(), "jarTask cannot be null!");

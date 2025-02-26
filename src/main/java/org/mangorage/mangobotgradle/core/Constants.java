@@ -22,7 +22,7 @@
 
 package org.mangorage.mangobotgradle.core;
 
-public class Constants {
+public final class Constants {
     public static final String BOT_TASKS_GROUP = "bot tasks";
     public static final String INSTALLER_TASKS_GROUP = "installer tasks";
 }

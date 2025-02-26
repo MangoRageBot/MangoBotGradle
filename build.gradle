@@ -22,7 +22,6 @@
 
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
 
         maven {
@@ -47,6 +46,8 @@ apply plugin: 'maven-publish'
 
 group = 'org.mangorage'
 version = getLatestGitTag() + "." + getLatestGitVersion()
+
+println("Version -> " + version)
 
 def getLatestGitTag() {
     def result = "git describe --long --tags".execute().text.trim()
@@ -90,11 +91,9 @@ dependencies {
     compileOnly 'org.apache.groovy:groovy:4.0.14'
     compileOnly gradleApi()
 
-    compileOnly 'org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r'
-    compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_140'
     compileOnly 'com.google.code.gson:gson:2.10.1'
+    compileOnly 'org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r'
 
-    shadow 'com.mattmalec:Pterodactyl4J:2.BETA_140'
     shadow 'com.google.code.gson:gson:2.10.1'
     shadow 'org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r'
 }
@@ -120,10 +119,21 @@ jar {
     }
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    setArchiveClassifier('sources')
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
 
 publishing {
     publications.register("gradleutils", MavenPublication) {
         artifact jar
+        artifact sourcesJar
+        artifact javadocJar
 
         pom {
             name = 'MangoBot GradleUtils'
@@ -137,6 +147,15 @@ publishing {
                 developer {
                     id = 'mangorage'
                     name = 'MangoRage'
+                }
+            }
+            withXml {
+                def dependencies = asNode().appendNode('dependencies')
+                configurations.library.getDependencies().each {
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', it.group)
+                    dependency.appendNode('artifactId', it.name)
+                    dependency.appendNode('version', it.version)
                 }
             }
         }

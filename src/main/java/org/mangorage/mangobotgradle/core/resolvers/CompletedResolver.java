@@ -22,5 +22,4 @@
 
 package org.mangorage.mangobotgradle.core.resolvers;
 
-public record CompletedResolver(boolean success, ResolveDependency dependency) {
-}
+public record CompletedResolver(boolean success, ResolveDependency dependency) { }
