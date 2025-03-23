@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public record GitVersion(String tag, String commits, String commit) {
-    private static final GitVersion UNKNOWN = new GitVersion("0.0", "9999", "unknown");
+public record GitVersion(String tag, String commits, String commit, String lastCommitMessage) {
+    private static final GitVersion UNKNOWN = new GitVersion("0.0", "9999", "unknown", "unknown");
 
     public static GitVersion getGitVersion() {
         try {
@@ -41,7 +41,10 @@ public record GitVersion(String tag, String commits, String commit) {
                 // Get HEAD commit short hash
                 String commitHash = repository.resolve("HEAD").getName().substring(0, 7);
 
-                return new GitVersion(tagName, String.valueOf(commitCount), commitHash);
+                // Get last commit message
+                String lastCommitMessage = getLastCommitMessage(repository);
+
+                return new GitVersion(tagName, String.valueOf(commitCount), commitHash, lastCommitMessage);
             }
         } catch (Exception ignored) {}
         return UNKNOWN;
@@ -67,6 +70,13 @@ public record GitVersion(String tag, String commits, String commit) {
         }
     }
 
+    private static String getLastCommitMessage(Repository repository) throws IOException {
+        try (RevWalk walk = new RevWalk(repository)) {
+            RevCommit headCommit = walk.parseCommit(repository.resolve("HEAD"));
+            return headCommit.getShortMessage();
+        }
+    }
+
     public boolean isUnknown() {
         return this == UNKNOWN;
     }
@@ -77,5 +87,9 @@ public record GitVersion(String tag, String commits, String commit) {
 
     public String getVersionAsString(boolean includeCommit) {
         return includeCommit ? tag + "." + commits + "-" + commit : tag + "." + commits;
+    }
+
+    public String getLastCommitMessage() {
+        return lastCommitMessage;
     }
 }
