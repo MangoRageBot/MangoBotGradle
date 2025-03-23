@@ -13,7 +13,7 @@ jobs:
   build:
     uses: MinecraftForge/SharedActions/.github/workflows/gradle.yml@v0
     with:
-      java: 22
+      java: 17
       gradle_tasks: :publish
       artifact_name: "MangoBotGradle"
       author_icon_url: "https://avatars.githubusercontent.com/u/147930550"
