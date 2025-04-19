@@ -168,7 +168,7 @@ public final class DatagenTask {
                 var conf = project.getConfigurations().getByName("library");
 
                 conf.getResolvedConfiguration().getFirstLevelModuleDependencies().forEach(a -> getTransitiveDep(repos, a, (module) -> {
-                    return !module.getGroup().contains("org.mangorage");
+                    return true;
                 }, deps, idents, urls));
 
                 deps.forEach(System.out::println);

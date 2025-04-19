@@ -63,7 +63,7 @@ public abstract class SetupPluginsTask extends DefaultTask {
 
     @TaskAction
     public void run() {
-        Path plugins = getProject().getRootDir().toPath().resolve("build/run/plugins");
+        Path plugins = getProject().getProjectDir().toPath().resolve("build/run/plugins");
 
         deleteFilesExceptJar(plugins);
 

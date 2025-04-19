@@ -46,7 +46,7 @@ public abstract class RunInstallerTask extends JavaExec {
      */
     @Override
     public List<String> getArgs() {
-        Path plugins = getProject().getRootDir().toPath().resolve("build/run/plugins");
+        Path plugins = getProject().getProjectDir().toPath().resolve("build/run/plugins");
         StringBuilder builder = new StringBuilder();
 
         for (File file : plugins.toFile().listFiles()) {
