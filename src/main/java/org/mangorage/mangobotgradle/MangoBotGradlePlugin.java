@@ -59,6 +59,7 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
             t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--dev"));
 
             t.register("runJPMSBot", RunBotJPMSTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--dev"));
+
         });
     }
 
