@@ -63,6 +63,7 @@ public abstract class CopyTask extends Copy {
         mustRunAfter(dependency);
     }
 
+
     @TaskAction
     public void run() {
         if (isPluginDev) {
