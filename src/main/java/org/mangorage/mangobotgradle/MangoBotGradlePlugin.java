@@ -28,6 +28,7 @@ import org.mangorage.mangobotgradle.core.Constants;
 import org.mangorage.mangobotgradle.core.TaskRegistry;
 import org.mangorage.mangobotgradle.tasks.CopyTask;
 import org.mangorage.mangobotgradle.tasks.DatagenTask;
+import org.mangorage.mangobotgradle.tasks.RunBotJPMSTask;
 import org.mangorage.mangobotgradle.tasks.RunBotTask;
 import org.mangorage.mangobotgradle.tasks.RunInstallerTask;
 import org.mangorage.mangobotgradle.tasks.SetupPluginsTask;
@@ -56,6 +57,8 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
 
             t.register("runBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP);
             t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--dev"));
+
+            t.register("runJPMSBot", RunBotJPMSTask.class, config, Constants.BOT_TASKS_GROUP);
         });
     }
 

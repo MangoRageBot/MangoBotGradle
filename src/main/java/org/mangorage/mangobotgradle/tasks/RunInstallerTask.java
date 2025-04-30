@@ -38,7 +38,7 @@ public abstract class RunInstallerTask extends JavaExec {
 
         setWorkingDir(getProject().file("build/run/"));
         classpath(getProject().getConfigurations().getByName("installer").getFiles());
-        setMain("org.mangorage.installer.Installer");
+        getMainClass().set("org.mangorage.installer.Installer");
     }
 
     /**

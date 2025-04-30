@@ -44,7 +44,7 @@ public abstract class RunBotTask extends JavaExec {
         mustRunAfter(deps);
 
         classpath(getProject().getConfigurations().getByName(config.isPluginDevMode() ? "bot" : "botInternal").getFiles());
-        setMain("org.mangorage.mangobot.loader.Loader");
+        getMainClass().set("org.mangorage.mangobot.loader.Loader");
         setWorkingDir(getProject().file("build/run/"));
         setArgs(args);
     }
