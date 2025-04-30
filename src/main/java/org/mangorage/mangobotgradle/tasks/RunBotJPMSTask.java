@@ -26,21 +26,14 @@ public abstract class RunBotJPMSTask extends JavaExec {
         setArgs(args);
         getMainClass().set("");
 
-        setClasspath(getProject().files()); // EMPTY CLASSPATH, this is MODULE mode
-
         // Create your module path from the config
         FileCollection modulePath = getProject().getConfigurations().getByName(
                 config.isPluginDevMode() ? "bot" : "botInternal"
         );
 
-        // Use JVM args to go full module mode
-        List<String> jvmArgs = new ArrayList<>();
-        jvmArgs.add("--module-path");
-        jvmArgs.add(modulePath.getAsPath());
-
-        jvmArgs.add("-m");
-        jvmArgs.add("org.mangorage.mangobotcore/org.mangorage.mangobot.loader.Loader");
-
-        setJvmArgs(jvmArgs);
+        setClasspath(modulePath); // EMPTY CLASSPATH, this is MODULE mode
+        getMainClass().set("org.mangorage.mangobot.loader.Loader");
+        getMainModule().set("org.mangorage.mangobotcore");
+        getModularity().getInferModulePath().set(true);
     }
 }
