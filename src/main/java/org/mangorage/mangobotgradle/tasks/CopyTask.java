@@ -68,6 +68,9 @@ public abstract class CopyTask extends Copy {
         if (isPluginDev) {
             getProject().getConfigurations().getByName("bot").getFiles().forEach(a -> {
                 try {
+                    if (!Files.exists(getProject().getProjectDir().toPath().resolve("build/run/boot/")))
+                        Files.createDirectories(getProject().getProjectDir().toPath().resolve("build/run/boot/"));
+
                     Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/boot/boot.jar"), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
