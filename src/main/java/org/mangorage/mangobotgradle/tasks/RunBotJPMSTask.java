@@ -32,8 +32,8 @@ public abstract class RunBotJPMSTask extends JavaExec {
         );
 
         setClasspath(modulePath); // EMPTY CLASSPATH, this is MODULE mode
-        getMainClass().set("org.mangorage.mangobot.loader.Loader");
-        getMainModule().set("org.mangorage.mangobotcore");
+        getMainClass().set("org.mangorage.bootstrap.Bootstrap");
+        getMainModule().set("org.mangorage.bootstrap");
         getModularity().getInferModulePath().set(true);
     }
 }

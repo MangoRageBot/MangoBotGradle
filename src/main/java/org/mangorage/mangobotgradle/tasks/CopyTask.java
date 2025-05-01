@@ -63,13 +63,12 @@ public abstract class CopyTask extends Copy {
         mustRunAfter(dependency);
     }
 
-
     @TaskAction
     public void run() {
         if (isPluginDev) {
             getProject().getConfigurations().getByName("bot").getFiles().forEach(a -> {
                 try {
-                    Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/plugins/bot.jar"), StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/boot/boot.jar"), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
