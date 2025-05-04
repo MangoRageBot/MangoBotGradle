@@ -23,17 +23,14 @@
 package org.mangorage.mangobotgradle.core;
 
 import org.gradle.api.Project;
-import org.mangorage.mangobotgradle.Config;
 
 import java.util.ArrayList;
 
 public final class TaskRegistry {
-    private final Config config;
+
     private final ArrayList<IRegisterSupplier> registerSuppliers = new ArrayList<>();
 
-    public TaskRegistry(Config config) {
-        this.config = config;
-    }
+    public TaskRegistry() {}
 
     public void register(IRegisterSupplier supplier) {
         registerSuppliers.add(supplier);

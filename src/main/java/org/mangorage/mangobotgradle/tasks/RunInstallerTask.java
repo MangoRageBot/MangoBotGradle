@@ -33,6 +33,7 @@ public abstract class RunInstallerTask extends JavaExec {
     @Inject
     public RunInstallerTask(String group) {
         setGroup(group);
+
         setDependsOn(List.of(getProject().getTasksByName("setupPlugins", false)));
         mustRunAfter(getProject().getTasksByName("setupPlugins", false));
 
@@ -58,6 +59,7 @@ public abstract class RunInstallerTask extends JavaExec {
         String args = builder.substring(0, builder.length() - 1);
 
         setArgs(List.of("-manualJar", args));
+
         return super.getArgs();
     }
 }

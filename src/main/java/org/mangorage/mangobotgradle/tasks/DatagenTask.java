@@ -29,6 +29,7 @@ import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.ResolvedDependency;
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.mangorage.mangobotgradle.MangoBotGradlePlugin;
+import org.mangorage.mangobotgradle.core.Constants;
 import org.mangorage.mangobotgradle.core.resolvers.ResolveDependency;
 import org.mangorage.mangobotgradle.core.resolvers.Resolver;
 import org.mangorage.mangobotgradle.util.Dependencies;
@@ -158,7 +159,7 @@ public final class DatagenTask {
 
     public static void apply(Project project, MangoBotGradlePlugin gradleUtilsPlugin) {
         var tp = project.getTasks().register("runDatagen", task -> {
-            task.setGroup("bot tasks");
+            task.setGroup(Constants.BOT_OTHER_TASKS_GROUP);
             task.doLast(action -> {
                 var repos = getAllRepositories(project);
                 var deps = new ArrayList<String>();

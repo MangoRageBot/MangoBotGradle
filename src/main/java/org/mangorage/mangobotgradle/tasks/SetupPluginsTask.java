@@ -24,49 +24,67 @@ package org.mangorage.mangobotgradle.tasks;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
+import org.mangorage.mangobotgradle.Config;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public abstract class SetupPluginsTask extends DefaultTask {
-
-    public static void deleteFilesExceptJar(Path directoryPath) {
-        File directory = directoryPath.toFile();
-
-        if (directory.exists() && directory.isDirectory()) {
-            File[] files = directory.listFiles();
-
-            if (files != null) {
-                for (File file : files) {
-                    if (!(file.getName().equals("bot.jar") || file.getName().equals("plugin.jar"))) {
-                        file.delete();
-                    }
-                }
-            }
-        } else {
-            System.out.println("Invalid directory path");
-        }
-    }
+    private final File file;
 
     @Inject
-    public SetupPluginsTask(String group) {
+    public SetupPluginsTask(Config config, String group) {
+        this.file = config.getJarTask().getArchiveFile().get().getAsFile();
         setGroup(group);
         setDescription("sets up the plugins");
 
-        setDependsOn(List.of(getProject().getTasksByName("copyTask", false)));
-        mustRunAfter(getProject().getTasksByName("copyTask", false));
+        var dependency = config.getJarTask();
+
+        dependsOn(dependency);
+        mustRunAfter(dependency);
     }
 
     @TaskAction
     public void run() {
         Path plugins = getProject().getProjectDir().toPath().resolve("build/run/plugins");
 
-        deleteFilesExceptJar(plugins);
+        try (final var files = Files.list(plugins)){
+            files
+                    .filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(".jar"))
+                    .forEach(path -> {
+                        try {
+                            System.out.println("Deleted -> " + path);
+                            Files.deleteIfExists(path);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        try {
+            Files.copy(file.toPath(), plugins.resolve(file.getName()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        getProject().getConfigurations().getByName("bootstrap").getFiles().forEach(a -> {
+            try {
+                if (!Files.exists(getProject().getProjectDir().toPath().resolve("build/run/boot/")))
+                    Files.createDirectories(getProject().getProjectDir().toPath().resolve("build/run/boot/"));
+
+                Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/boot/boot.jar"), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         getProject().getConfigurations().getByName("plugin").getFiles().forEach(file -> {
             try {

@@ -26,19 +26,20 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.mangorage.mangobotgradle.core.Constants;
 import org.mangorage.mangobotgradle.core.TaskRegistry;
-import org.mangorage.mangobotgradle.tasks.CopyTask;
 import org.mangorage.mangobotgradle.tasks.DatagenTask;
-import org.mangorage.mangobotgradle.tasks.RunBotJPMSTask;
 import org.mangorage.mangobotgradle.tasks.RunBotTask;
 import org.mangorage.mangobotgradle.tasks.RunInstallerTask;
 import org.mangorage.mangobotgradle.tasks.SetupPluginsTask;
 
-import java.util.List;
 import java.util.Objects;
 
 public final class MangoBotGradlePlugin implements Plugin<Project> {
+
+
+    public static Config cfg = null;
+
     private final Config config = new Config();
-    private final TaskRegistry taskRegistry = new TaskRegistry(config);
+    private final TaskRegistry taskRegistry = new TaskRegistry();
 
     public TaskRegistry getTaskRegistry() {
         return taskRegistry;
@@ -50,16 +51,19 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
 
     public MangoBotGradlePlugin() {
         taskRegistry.register(t -> {
-            t.register("copyTask", CopyTask.class, config, Constants.BOT_OTHER_TASKS_GROUP);
-            t.register("setupPlugins", SetupPluginsTask.class, Constants.BOT_OTHER_TASKS_GROUP);
+            MangoBotGradlePlugin.cfg = config;
+
+            t.register("setupPlugins", SetupPluginsTask.class, config, Constants.BOT_OTHER_TASKS_GROUP);
 
             t.register("runInstaller", RunInstallerTask.class, Constants.INSTALLER_TASKS_GROUP);
 
-            t.register("runBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP);
-            t.register("runDevBot", RunBotTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--dev"));
-
-            t.register("runJPMSBot", RunBotJPMSTask.class, config, Constants.BOT_TASKS_GROUP, List.of("--useModules --dev"));
-
+            config.getRunConfigs().forEach(cfg -> {
+                t.register(
+                        cfg.getName(),
+                        RunBotTask.class,
+                        cfg
+                );
+            });
         });
     }
 
@@ -71,15 +75,9 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
             t.setVisible(true);
         });
 
-        var botCfg = project.getConfigurations().create("bot", t -> {
+        var botCfg = project.getConfigurations().create("bootstrap", t -> {
             t.setVisible(true);
             t.setTransitive(false);
-        });
-
-        project.getConfigurations().create("botInternal", t -> {
-            t.setVisible(true);
-            t.setTransitive(false);
-            t.extendsFrom(project.getConfigurations().getByName("implementation"));
         });
 
         var plugin = project.getConfigurations().create("plugin", t -> {

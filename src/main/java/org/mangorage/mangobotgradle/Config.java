@@ -22,17 +22,20 @@
 
 package org.mangorage.mangobotgradle;
 
-import org.gradle.api.Task;
+import org.gradle.api.Action;
 import org.gradle.jvm.tasks.Jar;
 import org.mangorage.mangobotgradle.core.resolvers.Resolver;
 import org.mangorage.mangobotgradle.tasks.DatagenTask;
 
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class Config {
-    private boolean pluginDevMode = true;
+    private final List<RunConfig> runConfigs = new ArrayList<>();
+    private final List<RunConfig> runConfigs_readOnly = Collections.unmodifiableList(runConfigs);
+    private final RunConfig defaultRunConfig = new RunConfig();
     private Jar jarTask;
-    private Supplier<Task> releaseTask = () -> null;
 
     public Config() {}
 
@@ -44,15 +47,21 @@ public final class Config {
         return jarTask;
     }
 
-    public void disableCopyOverBot() {
-        this.pluginDevMode = false;
-    }
-
-    public boolean isPluginDevMode() {
-        return this.pluginDevMode;
-    }
-
     public void addResolver(Resolver resolver) {
         DatagenTask.add(resolver);
+    }
+
+    public void addRunConfig(Action<RunConfig> action) {
+        RunConfig runConfig = new RunConfig(); // or however you're instantiating this garbage
+        action.execute(runConfig);
+        runConfigs.add(runConfig);
+    }
+
+    public void useDefaultRunConfig() {
+        runConfigs.add(defaultRunConfig);
+    }
+
+    public List<RunConfig> getRunConfigs() {
+        return runConfigs_readOnly;
     }
 }
