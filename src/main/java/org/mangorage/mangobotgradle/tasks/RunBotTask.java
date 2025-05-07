@@ -7,6 +7,8 @@ import org.mangorage.mangobotgradle.RunConfig;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class RunBotTask extends JavaExec {
     @Inject
@@ -28,9 +30,12 @@ public abstract class RunBotTask extends JavaExec {
         // Create your module path from the config
         FileCollection modulePath = getProject().getConfigurations().getByName("bootstrap");
 
+
         setClasspath(modulePath); // EMPTY CLASSPATH, this is MODULE mode
         getMainClass().set("org.mangorage.bootstrap.Bootstrap");
         getMainModule().set("org.mangorage.bootstrap");
         getModularity().getInferModulePath().set(true);
+
+        setJvmArgs(List.of("--add-modules", "java.scripting"));
     }
 }
