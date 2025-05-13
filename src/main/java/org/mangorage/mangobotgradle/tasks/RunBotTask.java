@@ -36,6 +36,6 @@ public abstract class RunBotTask extends JavaExec {
         getMainModule().set("org.mangorage.bootstrap");
         getModularity().getInferModulePath().set(true);
 
-        setJvmArgs(List.of("--add-modules", "java.scripting"));
+        setJvmArgs(List.of("--add-modules", "java.scripting", "--add-modules", "java.instrument", "--add-modules", "java.sql"));
     }
 }
