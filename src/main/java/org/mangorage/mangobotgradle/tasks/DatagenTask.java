@@ -56,7 +56,8 @@ public final class DatagenTask {
 
     private static final List<String> mavenRepositories = List.of(
             "https://repo.maven.apache.org/maven2/",
-            "https://repo1.maven.org/maven2/"
+            "https://repo1.maven.org/maven2/",
+            "https://jitpack.io/"
     );
 
     private static final List<Resolver> resolvers = new ArrayList<>();
