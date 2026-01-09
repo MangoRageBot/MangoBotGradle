@@ -38,6 +38,7 @@ import org.mangorage.mangobotgradle.util.Dependency;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.module.ModuleFinder;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;

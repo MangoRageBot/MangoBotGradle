@@ -7,7 +7,6 @@ import org.mangorage.mangobotgradle.RunConfig;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class RunBotTask extends JavaExec {

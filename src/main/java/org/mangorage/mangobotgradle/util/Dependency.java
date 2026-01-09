@@ -22,4 +22,25 @@
 
 package org.mangorage.mangobotgradle.util;
 
-public record Dependency(String url, String group, String artifact, String version, String target) {}
+public record Dependency(
+        String url,
+        String group,
+        String artifact,
+        String version,
+        String target,
+        String output
+) {
+    public Dependency(String url, String group, String artifact, String version, String target) {
+        this(
+                url,
+                group,
+                artifact,
+                version,
+                target,
+                group.replace('.', '/')
+                        + "/" + artifact
+                        + "/" + version
+                        + "/" + target
+        );
+    }
+}
