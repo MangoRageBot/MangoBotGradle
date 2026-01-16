@@ -97,7 +97,8 @@ public abstract class SetupPluginsTask extends DefaultTask {
                             if (!Files.exists(getProject().getProjectDir().toPath().resolve("build/run/launch/")))
                                 Files.createDirectories(getProject().getProjectDir().toPath().resolve("build/run/launch/"));
 
-                            Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/launch/" + a.getName()), StandardCopyOption.REPLACE_EXISTING);
+                            // TODO: Fix it later
+                            Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/launch/launch.jar"), StandardCopyOption.REPLACE_EXISTING);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
