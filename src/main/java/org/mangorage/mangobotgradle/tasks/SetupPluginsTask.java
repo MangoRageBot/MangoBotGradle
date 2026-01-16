@@ -107,18 +107,6 @@ public abstract class SetupPluginsTask extends DefaultTask {
             }
         });
 
-        getProject().getConfigurations().getByName("launchtarget").getAllArtifacts().getFiles().forEach(a -> {
-            System.out.println("Launch Target Setup!");
-            try {
-                if (!Files.exists(getProject().getProjectDir().toPath().resolve("build/run/launch/")))
-                    Files.createDirectories(getProject().getProjectDir().toPath().resolve("build/run/launch/"));
-
-                Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/launch/" + a.getName()), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
         getProject().getConfigurations().getByName("plugin").getFiles().forEach(file -> {
             try {
                 Files.copy(file.toPath(), plugins.resolve(file.getName()));
