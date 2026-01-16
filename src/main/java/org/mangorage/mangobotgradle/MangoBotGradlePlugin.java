@@ -28,6 +28,7 @@ import org.mangorage.mangobotgradle.core.Constants;
 import org.mangorage.mangobotgradle.core.TaskRegistry;
 import org.mangorage.mangobotgradle.tasks.DatagenTask;
 import org.mangorage.mangobotgradle.tasks.RunBotTask;
+import org.mangorage.mangobotgradle.tasks.RunInstallerAndBootTask;
 import org.mangorage.mangobotgradle.tasks.RunInstallerTask;
 import org.mangorage.mangobotgradle.tasks.SetupPluginsTask;
 
@@ -61,6 +62,11 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
                 t.register(
                         cfg.getName(),
                         RunBotTask.class,
+                        cfg
+                );
+                t.register(
+                        cfg.getName() + "ViaInstaller",
+                        RunInstallerAndBootTask.class,
                         cfg
                 );
             });

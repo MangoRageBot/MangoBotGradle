@@ -9,15 +9,13 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class RunBotTask extends JavaExec {
+public abstract class RunInstallerAndBootTask extends JavaExec {
     @Inject
-    public RunBotTask(RunConfig runConfig) {
+    public RunInstallerAndBootTask(RunConfig runConfig) {
         setGroup(runConfig.getGroup());
         setDescription("Runs the bot");
 
-        ArrayList<Task> deps = new ArrayList<>();
-        deps.addAll(getProject().getTasksByName("copyTask", false));
-        deps.addAll(getProject().getTasksByName("runInstaller", false));
+        ArrayList<Task> deps = new ArrayList<>(getProject().getTasksByName("copyTask", false));
 
         setDependsOn(deps);
         mustRunAfter(deps);
@@ -26,12 +24,12 @@ public abstract class RunBotTask extends JavaExec {
         setArgs(runConfig.getArgs());
 
         // Create your module path from the config
-        FileCollection modulePath = getProject().getConfigurations().getByName("bootstrap");
+        FileCollection modulePath = getProject().getConfigurations().getByName("installer");
 
 
         setClasspath(modulePath); // EMPTY CLASSPATH, this is MODULE mode
-        getMainClass().set("org.mangorage.bootstrap.Bootstrap");
-        getMainModule().set("org.mangorage.bootstrap");
+        getMainClass().set("org.mangorage.installer.Installer");
+        getMainModule().set("org.mangorage.installer");
         getModularity().getInferModulePath().set(true);
 
         setJvmArgs(List.of("--add-modules", "java.scripting", "--add-modules", "java.instrument", "--add-modules", "java.sql", "--add-modules", "jdk.unsupported"));
