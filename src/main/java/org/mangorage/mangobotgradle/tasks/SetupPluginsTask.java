@@ -76,11 +76,25 @@ public abstract class SetupPluginsTask extends DefaultTask {
         }
 
         getProject().getConfigurations().getByName("bootstrap").getFiles().forEach(a -> {
+            System.out.println("Boot Setup!");
+
             try {
                 if (!Files.exists(getProject().getProjectDir().toPath().resolve("build/run/boot/")))
                     Files.createDirectories(getProject().getProjectDir().toPath().resolve("build/run/boot/"));
 
                 Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/boot/boot.jar"), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        getProject().getConfigurations().getByName("launchtarget").getAllArtifacts().getFiles().forEach(a -> {
+            System.out.println("Launch Target Setup!");
+            try {
+                if (!Files.exists(getProject().getProjectDir().toPath().resolve("build/run/launch/")))
+                    Files.createDirectories(getProject().getProjectDir().toPath().resolve("build/run/launch/"));
+
+                Files.copy(a.toPath(), getProject().getProjectDir().toPath().resolve("build/run/launch/" + a.getName()), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

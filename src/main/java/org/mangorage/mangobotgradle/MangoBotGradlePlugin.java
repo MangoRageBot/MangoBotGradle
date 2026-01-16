@@ -86,6 +86,11 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
             t.setTransitive(false);
         });
 
+        var launchCfg = project.getConfigurations().create("launchtarget", t -> {
+            t.setVisible(true);
+            t.setTransitive(false);
+        });
+
         var plugin = project.getConfigurations().create("plugin", t -> {
             t.setVisible(true);
             t.setTransitive(false);
@@ -101,7 +106,7 @@ public final class MangoBotGradlePlugin implements Plugin<Project> {
             t.setVisible(true);
         });
 
-        project.getConfigurations().findByName("implementation").extendsFrom(botCfg, plugin, library, embeddedLibrary);
+        project.getConfigurations().findByName("implementation").extendsFrom(botCfg, launchCfg, plugin, library, embeddedLibrary);
 
         project.afterEvaluate(a -> {
             Objects.requireNonNull(config.getJarTask(), "jarTask cannot be null!");
