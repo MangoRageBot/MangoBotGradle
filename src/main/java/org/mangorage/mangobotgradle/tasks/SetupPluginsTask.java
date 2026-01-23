@@ -52,6 +52,13 @@ public abstract class SetupPluginsTask extends DefaultTask {
     @TaskAction
     public void run() {
         Path plugins = getProject().getProjectDir().toPath().resolve("build/run/plugins");
+        if (!Files.exists(plugins)) {
+            try {
+                Files.createDirectories(plugins);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         try (final var files = Files.list(plugins)){
             files
