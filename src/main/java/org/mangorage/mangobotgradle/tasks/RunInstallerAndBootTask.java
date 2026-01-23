@@ -26,34 +26,39 @@ public abstract class RunInstallerAndBootTask extends JavaExec {
 
         setWorkingDir(getProject().file("build/run/"));
 
-        Path plugins = getProject().getProjectDir().toPath().resolve("build/run/plugins");
-        StringBuilder builder = new StringBuilder();
+        Path pluginsPath = getProject()
+                .getProjectDir()
+                .toPath()
+                .resolve("build/run/plugins");
 
-        for (File file : plugins.toFile().listFiles()) {
-            System.out.println(file.getName());
-            if (!file.isDirectory() && file.getName().contains(".jar"))
-                builder.append(file.toPath().toAbsolutePath()).append(";");
+        List<String> pluginJars = new ArrayList<>();
+
+        File pluginsDir = pluginsPath.toFile();
+        if (pluginsDir.exists() && pluginsDir.isDirectory()) {
+            File[] files = pluginsDir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().endsWith(".jar")) {
+                        pluginJars.add(file.getAbsolutePath());
+                    }
+                }
+            }
         }
 
-        String args = builder.substring(0, builder.length() - 1);
-        var finalArgs = List.of("-manualJar", args);
-
-        List<String> argsForProgram = new ArrayList<>();
-        argsForProgram.addAll(runConfig.getArgs());
+        List<String> argsForProgram = new ArrayList<>(runConfig.getArgs());
         argsForProgram.add("-launch");
-        argsForProgram.add("-manualJar");
-        argsForProgram.add(args);
+
+        if (!pluginJars.isEmpty()) {
+            String jarsArg = String.join(";", pluginJars);
+            argsForProgram.add("-manualJar");
+            argsForProgram.add(jarsArg);
+        }
+
         setArgs(argsForProgram);
 
-        // Create your module path from the config
-        FileCollection modulePath = getProject().getConfigurations().getByName("installer");
-
+        FileCollection modulePath =
+                getProject().getConfigurations().getByName("installer");
 
         setClasspath(modulePath); // EMPTY CLASSPATH, this is MODULE mode
-        getMainClass().set("org.mangorage.installer.Installer");
-        getMainModule().set("org.mangorage.installer");
-        getModularity().getInferModulePath().set(true);
-
-        setJvmArgs(List.of("--add-modules", "java.scripting", "--add-modules", "java.instrument", "--add-modules", "java.sql", "--add-modules", "jdk.unsupported"));
     }
 }
